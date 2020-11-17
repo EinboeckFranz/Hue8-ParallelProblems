@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.htlgrieskirchen.pos3.pcp;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -17,45 +12,54 @@ public class Storage {
     private boolean productionComplete;
     
     public Storage() {
-        // implement this
+        this.queue = new ArrayBlockingQueue<>(10);
+
+        this.fetchedCounter = 0;
+        this.storedCounter = 0;
+        this.underflowCounter = 0;
+        this.overflowCounter = 0;
+        this.productionComplete = false;
     }
     
     public synchronized boolean put(Integer data) throws InterruptedException {
-        // implement this
-        return false;
+        if(queue.size() == 10) {
+            overflowCounter++;
+            return false;
+        }
+        queue.put(data);
+        storedCounter++;
+        return true;
     }
  
     public synchronized Integer get() {
-        // implement this
-        return null;
+        if (queue.isEmpty())
+            underflowCounter++;
+        else
+            fetchedCounter++;
+        return queue.poll();
     }
 
     public boolean isProductionComplete() {
-        // implement this
-        return false;
+        return productionComplete;
     }
 
     public void setProductionComplete() {
-        // implement this
+        productionComplete = true;
     }
 
     public int getFetchedCounter() {
-        // implement this
-        return -1;
+        return fetchedCounter;
     }
 
     public int getStoredCounter() {
-        // implement this
-        return -1;
+        return storedCounter;
     }
 
     public int getUnderflowCounter() {
-        // implement this
-        return -1;
+        return underflowCounter;
     }
 
     public int getOverflowCounter() {
-        // implement this
-        return -1;
+        return overflowCounter;
     }
 }

@@ -1,14 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.htlgrieskirchen.pos3.pcp;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Thread.sleep;
 
-public class Consumer /* implement this */ {
+
+public class Consumer implements Runnable {
     private final String name;
     private final Storage storage;
     private final int sleepTime;
@@ -17,14 +15,28 @@ public class Consumer /* implement this */ {
     private boolean running;
     
     public Consumer(String name, Storage storage, int sleepTime) {
-        // implement this
+        this.name = name;
+        this.storage = storage;
+        this.sleepTime = sleepTime;
+        received = new ArrayList<>();
     }
  
-    // implement this
+    @Override
+    public void run() {
+        while(!(storage.isProductionComplete()&&storage.getStoredCounter()==storage.getFetchedCounter())){
+            Integer get = storage.get();
+            if(get!=null)
+                received.add(get);
+            try {
+                sleep(sleepTime);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public List<Integer> getReceived() {
-        // implement this
-        return null;
+        return this.received;
     }
 }
 

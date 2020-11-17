@@ -1,14 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package net.htlgrieskirchen.pos3.pcp;
 
 import java.util.List;
 
 /**
- *
  * @author rsickinger
  */
 public class Result {
@@ -75,8 +69,4 @@ public class Result {
     public void setOverflowCounter(int overflowCounter) {
         this.overflowCounter = overflowCounter;
     }
-
-
-    
-    
 }
